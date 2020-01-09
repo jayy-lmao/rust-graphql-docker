@@ -1,43 +1,32 @@
 use actix_web::{web, App, HttpServer, Responder};
-use serde::Serialize;
 
-mod person;
-mod cult;
+mod person_repository;
+mod cult_repository;
+mod types;
 
-#[derive(Serialize)]
-pub struct Cult {
-    pub id: i32,
-    pub name: String
-}
+use crate::types::{Person, Cult};
 
 fn get_cult_list() -> impl Responder {
     let mut vec:Vec<Cult> = Vec::new();
-    cult::get_cult_all(&mut vec);
+    cult_repository::get_cult_all(&mut vec);
     web::Json(vec)
 }
 
 fn get_cult(info: web::Path<i32>) -> impl Responder {
     let mut vec:Vec<Cult> = Vec::new();
-    cult::get_cult_by_id(&mut vec, info.into_inner());
+    cult_repository::get_cult_by_id(&mut vec, info.into_inner());
     web::Json(vec)
-}
- 
-#[derive(Serialize)]
-pub struct Person {
-    pub person_id: i32,
-    pub person_name: String
 }
  
 fn get_person_list() -> impl Responder {
     let mut vec:Vec<Person> = Vec::new();
-    person::get_person_all(&mut vec);
+    person_repository::get_person_all(&mut vec);
     web::Json(vec)
 }
 
-// Use i32 for int and serial in postgresql
 fn get_person(info: web::Path<i32>) -> impl Responder {
     let mut vec:Vec<Person> = Vec::new();
-    person::get_person_by_id(&mut vec, info.into_inner());
+    person_repository::get_person_by_id(&mut vec, info.into_inner());
     web::Json(vec)
 }
  
