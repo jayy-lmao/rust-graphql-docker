@@ -2,7 +2,26 @@ use actix_web::{web, App, HttpServer, Responder};
 use serde::Serialize;
 
 mod person;
+mod cult;
 
+#[derive(Serialize)]
+pub struct Cult {
+    pub id: i32,
+    pub name: String
+}
+
+fn get_cult_list() -> impl Responder {
+    let mut vec:Vec<Cult> = Vec::new();
+    cult::get_cult_all(&mut vec);
+    web::Json(vec)
+}
+
+fn get_cult(info: web::Path<i32>) -> impl Responder {
+    let mut vec:Vec<Cult> = Vec::new();
+    cult::get_cult_by_id(&mut vec, info.into_inner());
+    web::Json(vec)
+}
+ 
 #[derive(Serialize)]
 pub struct Person {
     pub person_id: i32,
@@ -36,6 +55,10 @@ fn main() {
                 .route(web::get().to(get_person)))
                 // .route(web::delete().to(delete_person))
                 // .route(web::put().to(update_person)))
+            .service(web::resource("/cults/{cult_id}")
+                .route(web::get().to(get_cult)))
+            .service(web::resource("/cults")
+                .route(web::get().to(get_cult_list)))
             .service(web::resource("/persons")
                 .route(web::get().to(get_person_list)))
                 // .route(web::post().to(create_person)))

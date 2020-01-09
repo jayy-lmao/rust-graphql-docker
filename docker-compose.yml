@@ -2,7 +2,7 @@ version: "2.3"
 services:
   api:
     build:
-      context: ./readspacer-api
+      context: ./api
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
