@@ -8,3 +8,11 @@ CREATE TABLE persons
 
 INSERT INTO persons (person_name) 
         VALUES ('Tim');
+INSERT INTO persons (person_name) 
+        VALUES ('Bill');
+INSERT INTO persons (person_name) 
+        VALUES ('Bob');
+INSERT INTO persons (person_name) 
+        VALUES ('Hamo');
+INSERT INTO persons (person_name) 
+        VALUES ('Jerry');

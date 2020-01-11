@@ -3,6 +3,7 @@ use actix_web::{web, App, HttpServer, Responder};
 mod models;
 mod resolvers;
 mod types;
+mod db;
 
 fn greet() -> impl Responder {
     "Yo there"
@@ -13,6 +14,9 @@ fn main() {
     HttpServer::new(|| {
         App::new()
             .service(web::resource("/hello").route(web::get().to(greet)))
+            .service(
+                web::resource("/some_persons").route(web::get().to(resolvers::person::get_some_person)),
+            )
             .service(
                 web::resource("/persons").route(web::get().to(resolvers::person::get_person_list)),
             )
