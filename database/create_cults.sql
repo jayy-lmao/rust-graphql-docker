@@ -8,3 +8,5 @@ CREATE TABLE cults
 
 INSERT INTO cults (name) 
         VALUES ('Church of the Latter day dudes');
+INSERT INTO cults (name) 
+        VALUES ('Universal Medicine');
