@@ -8,9 +8,13 @@ pub fn get_person_list() -> impl Responder {
   web::Json(vec)
 }
 
-pub fn get_some_person() -> impl Responder {
+pub fn get_some_person(id_strings: web::Path<String>) -> impl Responder {
+  let mut id_vector: Vec<i32> = vec![];
+  for id_string in id_strings.split(",") {
+    id_vector.push(id_string.parse().unwrap())
+  }
   let mut vec: Vec<Person> = Vec::new();
-  models::person::get_person_by_ids(&mut vec, vec![1,2,3]);
+  models::person::get_person_by_ids(&mut vec, id_vector);
   web::Json(vec)
 }
 

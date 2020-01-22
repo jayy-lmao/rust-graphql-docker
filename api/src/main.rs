@@ -15,7 +15,7 @@ fn main() {
         App::new()
             .service(web::resource("/hello").route(web::get().to(greet)))
             .service(
-                web::resource("/some_persons").route(web::get().to(resolvers::person::get_some_person)),
+                web::resource("/some_persons/{person_ids}").route(web::get().to(resolvers::person::get_some_person)),
             )
             .service(
                 web::resource("/persons").route(web::get().to(resolvers::person::get_person_list)),
