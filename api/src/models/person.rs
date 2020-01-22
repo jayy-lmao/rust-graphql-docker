@@ -5,7 +5,7 @@ use crate::types::Person;
 pub fn get_person_all(vec: &mut Vec<Person>) {
     let conn = get_db_conn();
     for row in &conn
-        .query("SELECT person_id, person_name FROM persons", &[])
+        .query("SELECT person_id, person_name, cult FROM persons", &[])
         .unwrap()
     {
         let person = Person {
