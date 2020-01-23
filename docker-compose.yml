@@ -21,6 +21,7 @@ services:
     image: postgres:12
     mem_limit: 1536MB
     mem_reservation: 1G
+    command: ["postgres", "-c", "log_statement=all", "-c", "log_destination=stderr"]
     environment:
       POSTGRES_USER: jayylmao
       POSTGRES_PASSWORD: yeetus
