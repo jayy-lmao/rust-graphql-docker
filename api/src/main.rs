@@ -7,7 +7,7 @@ mod models;
 mod resolvers;
 mod types;
 
-use actix_web::{web, App, Error, HttpResponse, HttpServer, Responder};
+use actix_web::{web, App, Error, HttpResponse, HttpServer};
 use futures::future::Future;
 use juniper::http::GraphQLRequest;
 use juniper::http::playground::playground_source;

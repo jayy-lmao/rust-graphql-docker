@@ -1,15 +1,19 @@
-use actix_web::{web, Responder};
+use crate::types::{Cult, Person};
+use crate::models::person:: get_person_by_cult;
 
-use crate::{models, types::Cult};
+#[juniper::object(description = "A real human CULT")]
+impl Cult {
+  pub fn id(&self) -> i32 {
+    self.id
+  }
 
-pub fn get_cult_list() -> impl Responder {
-  let mut vec: Vec<Cult> = Vec::new();
-  models::cult::get_cult_all(&mut vec);
-  web::Json(vec)
-}
+  pub fn name(&self) -> &str {
+    self.name.as_str()
+  }
 
-pub fn get_cult(info: web::Path<i32>) -> impl Responder {
-  let mut vec: Vec<Cult> = Vec::new();
-  models::cult::get_cult_by_id(&mut vec, info.into_inner());
-  web::Json(vec)
+  pub fn members(&self) -> Vec<Person> {
+    let mut vec: Vec<Person> = Vec::new();
+    get_person_by_cult(&mut vec, self.id);
+    vec
+  }
 }

@@ -1,6 +1,6 @@
 extern crate postgres;
-use crate::db::get_db_conn;
 use crate::types::Person;
+use crate::db::get_db_conn;
 
 pub fn get_person_all(vec: &mut Vec<Person>) {
     let conn = get_db_conn();
