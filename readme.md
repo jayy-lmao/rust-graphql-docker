@@ -14,6 +14,7 @@ simple as `docker-compose up`, crazy!
 
 - [x] DB connection
 - [x] Expose graphql
+- [ ] Mutations!
 - [ ] Context to later use in Dataloaders and Auth
 - [ ] Dataloaders
 - [ ] Auth?
