@@ -37,13 +37,29 @@ pub fn get_person_by_ids(vec: &mut Vec<Person>, ids: Vec<i32>) {
 }
 
 pub fn get_person_by_id(vec: &mut Vec<Person>, id: i32) {
-    // let pg_connection_string = env::var("DATABASE_URI").expect("need a db uri");
-    // let conn = Connection::connect(&pg_connection_string[..], TlsMode::None).unwrap();
     let conn = get_db_conn();
     for row in &conn
         .query(
-            "SELECT person_id, person_name, cult FROM persons WHERE person_id = $1",
+            "select person_id, person_name, cult from persons where person_id = $1",
             &[&id],
+        )
+        .unwrap()
+    {
+        let person = Person {
+            person_id: row.get(0),
+            person_name: row.get(1),
+            cult: row.get(2),
+        };
+        vec.push(person);
+    }
+}
+
+pub fn get_person_by_cult(vec: &mut Vec<Person>, cult: i32) {
+    let conn = get_db_conn();
+    for row in &conn
+        .query(
+            "select person_id, person_name, cult from persons where cult = $1",
+            &[&cult],
         )
         .unwrap()
     {
