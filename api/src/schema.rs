@@ -1,4 +1,4 @@
-use juniper::{RootNode};
+use juniper::{RootNode, FieldResult};
 
 use crate::models::{
   cult::{
@@ -41,8 +41,11 @@ impl MutationRoot {
    fn create_person(data: NewPerson) -> Person{
       create_person(data)
    }
-   fn create_cult(data: NewCult) -> Cult{
-      create_cult(data)
+   fn create_cult(data: NewCult) -> FieldResult<Option<Cult>> {
+      match create_cult(data) {
+        Ok(cult) => Ok(cult),
+        Err(e) => Err(e)?,
+      }
    }
 }
 

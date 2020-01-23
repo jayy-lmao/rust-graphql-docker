@@ -1,7 +1,7 @@
 CREATE TABLE cults
 (
 	id serial NOT NULL,
-	name VARCHAR(100)
+	name VARCHAR(100) UNIQUE
 );
  
 -- ALTER TABLE CULTS owner TO jayylmao;
