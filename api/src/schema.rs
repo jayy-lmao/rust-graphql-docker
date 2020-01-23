@@ -1,10 +1,22 @@
-use juniper::{EmptyMutation, RootNode};
+use juniper::{RootNode};
 
 use crate::models::{
-  cult::get_cult_all,
-  person::get_person_all,
+  cult::{
+    get_cult_all,
+    create_cult
+  },
+  person::{
+    get_person_all,
+    create_person
+  },
 };
-use crate::types::{Cult, Person};
+use crate::types::{
+  Cult, 
+  NewCult,
+  Person, 
+  NewPerson
+};
+
 pub struct QueryRoot;
 
 #[juniper::object]
@@ -22,8 +34,21 @@ impl QueryRoot {
   }
 }
 
-pub type Schema = RootNode<'static, QueryRoot, EmptyMutation<()>>;
+pub struct MutationRoot;
+
+#[juniper::object]
+impl MutationRoot {
+   fn create_person(data: NewPerson) -> Person{
+      create_person(data)
+   }
+   fn create_cult(data: NewCult) -> Cult{
+      create_cult(data)
+   }
+}
+
+
+pub type Schema = RootNode<'static, QueryRoot, MutationRoot>;
 
 pub fn create_schema() -> Schema {
-  Schema::new(QueryRoot {}, EmptyMutation::new())
+  Schema::new(QueryRoot {}, MutationRoot {})
 }
