@@ -3,8 +3,10 @@
 extern crate serde_derive;
 
 mod graphql;
-// mod schema;
-// mod errors;
+mod loaders;
+mod models;
+mod types;
+mod db;
 
 use actix_web::{App, HttpServer};
 
