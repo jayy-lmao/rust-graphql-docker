@@ -1,5 +1,6 @@
 use crate::db::get_db_conn;
-use crate::types::{Cult, NewCult};
+use crate::types::{NewCult};
+use crate::graphql::model::Cult;
 use juniper::FieldResult;
 
 pub fn get_cult_all(vec: &mut Vec<Cult>) {

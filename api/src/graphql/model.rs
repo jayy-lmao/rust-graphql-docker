@@ -1,5 +1,6 @@
 use crate::loaders::person_loader::PersonBatcher;
-use dataloader::Loader;
+use crate::models::cult;
+use dataloader::cached::Loader;
 use juniper;
 use futures::executor;
 
@@ -21,8 +22,54 @@ impl Person {
   }
 }
 
+#[derive(Debug, Clone)]
+pub struct Cult {
+    pub id: i32,
+    pub name: String,
+}
+
+#[juniper::graphql_object(Context = Context)]
+impl Cult {
+  pub fn id(&self) -> i32 {
+    self.id
+  }
+
+  pub fn name(&self) -> &str {
+    self.name.as_str()
+  }
+
+  pub fn members(context: &Context) -> Vec<Person> {
+      let mut vec = Vec::new();
+      for i in 1..3 {
+        vec.push(person_by_id(context, i));
+      }
+      vec
+  }
+}
+
 #[derive(Clone)]
 pub struct Context {
+    /* dataloader::cached::Loader<
+        i32, 
+        graphql::model::Person,
+        (),
+        loaders::person_loader::PersonBatcher,
+        std::collections::BTreeMap<
+            i32,
+           dataloader::cached::CacheItem<
+               std::result::Result<
+                   graphql::model::Person,
+                   dataloader::LoadError<()>>,
+                   dataloader::non_cached::LoadFuture<
+                       i32,
+                       graphql::model::Person,
+                       (),
+                       loaders::person_loader::PersonBatcher
+                    >
+                >
+            >
+        >
+    */
     person_loader: Loader<i32, Person, (), PersonBatcher>,
 }
 
@@ -36,6 +83,11 @@ impl Context {
 
 pub struct Query;
 
+fn person_by_id(ctx: &Context, id: i32) -> Person {
+    let res = ctx.person_loader.load(id);
+    executor::block_on(res).unwrap()
+}
+
 #[juniper::graphql_object(Context = Context)]
 impl Query {
     fn users(context: &Context, limit: Option<i32>) -> Vec<i32> {
@@ -43,8 +95,12 @@ impl Query {
         vec
     }
     fn person_by_id(context: &Context, id: i32) -> Person {
-        let res = context.person_loader.load(id);
-        executor::block_on(res).unwrap()
+        person_by_id(context, id)
+    }
+    fn cults() -> Vec<Cult> {
+        let mut vec = Vec::new();
+        cult::get_cult_all(&mut vec);
+        vec
     }
 }
 
