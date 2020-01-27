@@ -10,8 +10,7 @@ pub(super) async fn graphql(
   data: web::Json<GraphQLRequest>,
 ) -> Result<HttpResponse, Error> {
   let person_loader = Loader::new(person_loader::PersonBatcher);
-  let cached_person_loader  = person_loader.cached();
-  let ctx = Context::new(cached_person_loader);
+  let ctx = Context::new(person_loader);
 
   let res = data.execute(&st, &ctx);
   let json = serde_json::to_string(&res).map_err(error::ErrorInternalServerError)?;

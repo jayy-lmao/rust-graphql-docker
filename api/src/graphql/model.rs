@@ -1,8 +1,8 @@
 use crate::loaders::person_loader::PersonBatcher;
 use crate::models::cult;
-use dataloader::cached::Loader;
+use dataloader::Loader;
 use juniper;
-use futures::executor;
+use futures::{executor, future::Future};
 
 #[derive(Debug, Clone)]
 pub struct Person {
@@ -38,10 +38,10 @@ impl Cult {
     self.name.as_str()
   }
 
-  pub fn members(context: &Context) -> Vec<Person> {
+  pub async fn members(context: &Context) -> Vec<Person> {
       let mut vec = Vec::new();
       for i in 1..3 {
-        vec.push(person_by_id(context, i));
+        vec.push(person_by_id(context, i).await);
       }
       vec
   }
@@ -49,27 +49,6 @@ impl Cult {
 
 #[derive(Clone)]
 pub struct Context {
-    /* dataloader::cached::Loader<
-        i32, 
-        graphql::model::Person,
-        (),
-        loaders::person_loader::PersonBatcher,
-        std::collections::BTreeMap<
-            i32,
-           dataloader::cached::CacheItem<
-               std::result::Result<
-                   graphql::model::Person,
-                   dataloader::LoadError<()>>,
-                   dataloader::non_cached::LoadFuture<
-                       i32,
-                       graphql::model::Person,
-                       (),
-                       loaders::person_loader::PersonBatcher
-                    >
-                >
-            >
-        >
-    */
     person_loader: Loader<i32, Person, (), PersonBatcher>,
 }
 
@@ -83,21 +62,21 @@ impl Context {
 
 pub struct Query;
 
-fn person_by_id(ctx: &Context, id: i32) -> Person {
+async fn person_by_id(ctx: &Context, id: i32) -> Person {
     let res = ctx.person_loader.load(id);
-    executor::block_on(res).unwrap()
+    res.await.unwrap()
 }
 
 #[juniper::graphql_object(Context = Context)]
 impl Query {
-    fn users(context: &Context, limit: Option<i32>) -> Vec<i32> {
+    async fn users(context: &Context, limit: Option<i32>) -> Vec<i32> {
         let vec = vec![1, 2, 3, 4];
         vec
     }
-    fn person_by_id(context: &Context, id: i32) -> Person {
-        person_by_id(context, id)
+    async fn person_by_id(context: &Context, id: i32) -> Person {
+        person_by_id(context, id).await
     }
-    fn cults() -> Vec<Cult> {
+    async fn cults() -> Vec<Cult> {
         let mut vec = Vec::new();
         cult::get_cult_all(&mut vec);
         vec
