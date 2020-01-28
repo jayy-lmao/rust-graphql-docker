@@ -5,8 +5,8 @@ use crate::models::{
 };
 
 // pub struct Person {
-//   pub person_id: i32,
-//   pub person_name: String,
+//   pub id: i32,
+//   pub name: String,
 //   pub cult: Option<i32>,
 // }
 
@@ -15,11 +15,11 @@ use crate::models::{
 #[juniper::graphql_object(Context = Context, description = "A real human bean")]
 impl Person {
   pub fn id(&self) -> i32 {
-    self.person_id
+    self.id
   }
 
   pub fn name(&self) -> &str {
-    self.person_name.as_str()
+    self.name.as_str()
   }
 
   pub fn cult(&self) -> Vec<Cult> {

@@ -7,13 +7,13 @@ use crate::models;
 pub fn get_person_all(vec: &mut Vec<Person>) {
     let conn = get_db_conn();
     for row in &conn
-        .query("SELECT person_id, person_name, cult FROM persons", &[])
+        .query("SELECT id, name, cult FROM persons", &[])
         .unwrap()
     {
         let person = schema::Person {
             person: models::Person {
-                person_id: row.get(0),
-                person_name: row.get(1),
+                id: row.get(0),
+                name: row.get(1),
                 cult: row.get(2),
             }
         };
@@ -25,14 +25,14 @@ pub fn get_person_by_ids(vec: &mut Vec<Person>, ids: Vec<i32>) {
     let conn = get_db_conn();
     for row in &conn
         .query(
-            "SELECT person_id, person_name, cult FROM persons WHERE person_id = ANY($1)",
+            "SELECT id, name, cult FROM persons WHERE id = ANY($1)",
             &[&ids],
         )
         .unwrap()
     {
         let person = Person {
-            person_id: row.get(0),
-            person_name: row.get(1),
+            id: row.get(0),
+            name: row.get(1),
             cult: row.get(2),
         };
         vec.push(person);
@@ -43,14 +43,14 @@ pub fn get_person_by_id(vec: &mut Vec<Person>, id: i32) {
     let conn = get_db_conn();
     for row in &conn
         .query(
-            "select person_id, person_name, cult from persons where person_id = $1",
+            "select id, name, cult from persons where id = $1",
             &[&id],
         )
         .unwrap()
     {
         let person = Person {
-            person_id: row.get(0),
-            person_name: row.get(1),
+            id: row.get(0),
+            name: row.get(1),
             cult: row.get(2),
         };
         vec.push(person);
@@ -61,14 +61,14 @@ pub fn get_person_by_id(vec: &mut Vec<Person>, id: i32) {
 //     let conn = get_db_conn();
 //     let res = &conn
 //         .query(
-//             "select person_id, person_name, cult from persons where cult = $1",
+//             "select id, name, cult from persons where cult = $1",
 //             &[&cult],
 //         )
 //         .unwrap();
 //     for row in res {
 //         let person = Person {
-//             person_id: row.get(0),
-//             person_name: row.get(1),
+//             id: row.get(0),
+//             name: row.get(1),
 //             cult: row.get(2),
 //         };
 //         vec.push(person);
@@ -79,14 +79,14 @@ pub fn get_person_by_id(vec: &mut Vec<Person>, id: i32) {
 //     let conn = get_db_conn();
 //     let res = &conn
 //         .query(
-//             "INSERT INTO persons (person_name, cult) VALUES ($1, $2) RETURNING person_id, person_name, cult;",
+//             "INSERT INTO persons (name, cult) VALUES ($1, $2) RETURNING id, name, cult;",
 //             &[&data.name, &data.cult],
 //         )
 //         .unwrap();
 //     let row = res.iter().next().unwrap();
 //     Person {
-//         person_id: row.get(0),
-//         person_name: row.get(1),
+//         id: row.get(0),
+//         name: row.get(1),
 //         cult: row.get(2)
 //     }
 // }

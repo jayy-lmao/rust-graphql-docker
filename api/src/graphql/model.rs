@@ -6,19 +6,19 @@ use juniper::FieldResult;
 
 #[derive(Debug, Clone)]
 pub struct Person {
-  pub person_id: i32,
-  pub person_name: String,
+  pub id: i32,
+  pub name: String,
   pub cult: i32,
 }
 
 #[juniper::graphql_object(Context = Context)]
 impl Person {
   pub fn id(&self) -> i32 {
-    self.person_id
+    self.id
   }
 
   pub fn name(&self) -> &str {
-    self.person_name.as_str()
+    self.name.as_str()
   }
 }
 
