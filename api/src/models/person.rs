@@ -1,6 +1,5 @@
 extern crate postgres;
 use crate::db::get_db_conn;
-use crate::types::{NewPerson};
 use crate::graphql::model::Person;
 
 pub fn get_person_all(vec: &mut Vec<Person>) {
@@ -72,18 +71,18 @@ pub fn get_person_by_cult(vec: &mut Vec<Person>, cult: i32) {
     }
 }
 
-pub fn create_person(data: NewPerson) -> Person {
-    let conn = get_db_conn();
-    let res = &conn
-        .query(
-            "INSERT INTO persons (person_name, cult) VALUES ($1, $2) RETURNING person_id, person_name, cult;",
-            &[&data.name, &data.cult],
-        )
-        .unwrap();
-    let row = res.iter().next().unwrap();
-    Person {
-        person_id: row.get(0),
-        person_name: row.get(1),
-        cult: row.get(2)
-    }
-}
+// pub fn create_person(data: NewPerson) -> Person {
+//     let conn = get_db_conn();
+//     let res = &conn
+//         .query(
+//             "INSERT INTO persons (person_name, cult) VALUES ($1, $2) RETURNING person_id, person_name, cult;",
+//             &[&data.name, &data.cult],
+//         )
+//         .unwrap();
+//     let row = res.iter().next().unwrap();
+//     Person {
+//         person_id: row.get(0),
+//         person_name: row.get(1),
+//         cult: row.get(2)
+//     }
+// }

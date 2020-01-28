@@ -1,9 +1,7 @@
 use crate::loaders::person_loader::PersonBatcher;
 use crate::models::cult;
 use dataloader::Loader;
-use futures::{executor, future::Future};
 use juniper;
-use juniper::FieldError;
 use juniper::FieldResult;
 
 #[derive(Debug, Clone)]
@@ -68,10 +66,6 @@ pub struct Query;
 
 #[juniper::graphql_object(Context = Context)]
 impl Query {
-  async fn users(context: &Context, limit: Option<i32>) -> Vec<i32> {
-    let vec = vec![1, 2, 3, 4];
-    vec
-  }
   async fn person_by_id(context: &Context, id: i32) -> FieldResult<Person> {
     Ok(context.person_loader.load(id).await.unwrap())
   }
