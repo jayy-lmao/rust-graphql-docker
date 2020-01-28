@@ -33,8 +33,3 @@ impl BatchFn<i32, Person> for PersonBatcher {
       .boxed()
   }
 }
-
-// pub fn person_loader() -> Loader<i32, Person, (), Batcher> {
-//   let loader = Loader::new(Batcher);
-//   loader
-// }

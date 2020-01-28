@@ -9,10 +9,15 @@ pub(super) async fn graphql(
   st: web::Data<Arc<Schema>>,
   data: web::Json<GraphQLRequest>,
 ) -> Result<HttpResponse, Error> {
+  let mut rt = futures::executor::LocalPool::new();
   let person_loader = Loader::new(person_loader::PersonBatcher);
   let ctx = Context::new(person_loader);
+  let f = data.execute_async(&st, &ctx);
+  let res = rt.run_until(f);
+  // let json = serde_json::to_vec(&res);
 
-  let res = data.execute(&st, &ctx);
+
+  // let res = data.execute_async(&st, &ctx);
   let json = serde_json::to_string(&res).map_err(error::ErrorInternalServerError)?;
 
   Ok(
