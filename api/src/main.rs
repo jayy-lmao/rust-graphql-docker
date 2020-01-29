@@ -1,52 +1,28 @@
-#[macro_use]
-extern crate juniper;
 
+extern crate serde_derive;
+
+mod graphql;
 mod db;
-mod schema;
-mod models;
-mod resolvers;
-mod types;
+mod data;
+mod type_defs;
 
-use actix_web::{web, App, Error, HttpResponse, HttpServer};
-use futures::future::Future;
-use juniper::http::GraphQLRequest;
-use juniper::http::playground::playground_source;
-use std::io;
-use std::sync::Arc;
-use crate::schema::{create_schema, Schema};
+use actix_web::{App, HttpServer};
 
-fn graphql(
-    st: web::Data<Arc<Schema>>,
-    data: web::Json<GraphQLRequest>,
-) -> impl Future<Item = HttpResponse, Error = Error> {
-    web::block(move || {
-        let res = data.execute(&st, &());
-        Ok::<_, serde_json::error::Error>(serde_json::to_string(&res)?)
+
+#[actix_rt::main]
+async fn main() -> std::io::Result<()> {
+    let schema = std::sync::Arc::new(crate::graphql::schema::create_schema());
+
+    let server = HttpServer::new(move || {
+        App::new()
+            .data(schema.clone())
+            .configure(graphql::route)
     })
-    .map_err(Error::from)
-    .and_then(|user| {
-        Ok(HttpResponse::Ok()
-            .content_type("application/json")
-            .body(user))
-    })
-}
+    .bind(("0.0.0.0", 8000))
+    .unwrap()
+    .run();
 
-fn playground() -> HttpResponse {
-    let html = playground_source("http://localhost:8000/graphql");
-    HttpResponse::Ok()
-        .content_type("text/html; charset=utf-8")
-        .body(html)
-}
+    eprintln!("Listening on 0.0.0.0:8000");
 
-fn main() -> io::Result<()> {
-    let schema = std::sync::Arc::new(create_schema());
-    HttpServer::new(move || {
-        App::new().data(schema.clone()).service(
-            web::resource("/graphql")
-                .route(web::post().to_async(graphql))
-                .route(web::get().to(playground)),
-        )
-    })
-    .bind("0.0.0.0:8000")?
-    .run()
+    server.await
 }
