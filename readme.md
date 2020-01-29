@@ -20,4 +20,5 @@ simple as `docker-compose up`, crazy!
   - [ ] Delete
 - [ ] Context to later use in Dataloaders and Auth
 - [ ] Dataloaders
-- [ ] Auth?
+- [x] Auth?
+- [ ] DB pool
