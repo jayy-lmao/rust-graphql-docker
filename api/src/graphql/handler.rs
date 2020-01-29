@@ -9,11 +9,15 @@ pub async fn graphql(
   data: web::Json<GraphQLRequest>,
 ) -> Result<HttpResponse, Error> {
   let mut rt = futures::executor::LocalPool::new();
+
+  // Context setup
   let person_data = PersonData::new();
   let cult_data = CultData::new();
   let ctx = Context::new(person_data, cult_data);
-  let f = data.execute_async(&st, &ctx);
-  let res = rt.run_until(f);
+
+  // Execute
+  let future_execute = data.execute_async(&st, &ctx);
+  let res = rt.run_until(future_execute);
   let json = serde_json::to_string(&res).map_err(error::ErrorInternalServerError)?;
 
   Ok(
@@ -24,6 +28,7 @@ pub async fn graphql(
 }
 
 pub fn playground() -> HttpResponse {
+  // I prefer playground but you can use graphiql as well
   let html = playground_source("http://localhost:8000/graphql");
   HttpResponse::Ok()
     .content_type("text/html; charset=utf-8")

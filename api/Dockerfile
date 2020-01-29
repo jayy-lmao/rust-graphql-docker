@@ -11,8 +11,8 @@ ENV RUST_TARGETS="x86_64-unknown-linux-musl"
 RUN rustup target install x86_64-unknown-linux-musl
 
 # Creating a placeholder project
-RUN USER=root cargo new readspacer-api
-WORKDIR /usr/src/readspacer-api
+RUN USER=root cargo new rust-graphql
+WORKDIR /usr/src/rust-graphql
 
 # moving deps info
 COPY ./Cargo.lock ./Cargo.lock
@@ -31,6 +31,6 @@ RUN cargo build --target x86_64-unknown-linux-musl --release
 
 # This creates a TINY container with the executable! Like 4-5mb srsly
 FROM scratch
-COPY --from=build /usr/src/readspacer-api/target/x86_64-unknown-linux-musl/release/readspacer-api .
+COPY --from=build /usr/src/rust-graphql/target/x86_64-unknown-linux-musl/release/rust-graphql .
 USER 1000
-CMD ["./readspacer-api"]
+CMD ["./rust-graphql"]

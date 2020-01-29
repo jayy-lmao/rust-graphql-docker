@@ -1,5 +1,5 @@
 [package]
-name = "readspacer-api"
+name = "rust-graphql"
 version = "0.1.0"
 authors = ["Jayy-Lmao <jameswarringtonholman@gmail.com>"]
 edition = "2018"
@@ -32,5 +32,5 @@ serde_json = "1.0"
 thiserror = "1.0"
 
 [[bin]]
-name = "readspacer-api"
+name = "rust-graphql"
 path = "src/main.rs"
