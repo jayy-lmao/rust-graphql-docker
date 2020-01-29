@@ -1,17 +1,17 @@
 
-#[macro_use]
 extern crate serde_derive;
 
 mod graphql;
 mod db;
 mod data;
+mod type_defs;
 
 use actix_web::{App, HttpServer};
 
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
-    let schema = std::sync::Arc::new(crate::graphql::resolvers::create_schema());
+    let schema = std::sync::Arc::new(crate::graphql::schema::create_schema());
 
     let server = HttpServer::new(move || {
         App::new()

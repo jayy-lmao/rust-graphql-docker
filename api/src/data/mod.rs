@@ -1,2 +1,5 @@
-pub mod person;
-pub mod cult;
+mod person;
+mod cult;
+
+pub use person::PersonData;
+pub use cult::CultData;

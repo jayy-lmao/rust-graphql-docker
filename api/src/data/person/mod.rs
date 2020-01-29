@@ -1,4 +1,4 @@
-use crate::graphql::resolvers::Person;
+use crate::type_defs::Person;
 
 pub mod get_person_by_id;
 pub mod get_persons_by_cult_id;

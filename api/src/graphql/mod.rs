@@ -1,9 +1,11 @@
 use actix_web::web;
 
 mod handler;
-pub mod resolvers;
+pub mod schema;
+pub mod mutation;
+pub mod query;
 
-pub(super) fn route(cfg: &mut web::ServiceConfig) {
+pub fn route(cfg: &mut web::ServiceConfig) {
   cfg.service(
     web::resource("/graphql")
       .route(web::post().to(handler::graphql))

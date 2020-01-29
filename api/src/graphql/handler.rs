@@ -1,11 +1,10 @@
-use crate::graphql::resolvers::{Context, Schema};
+use crate::data::{CultData, PersonData};
+use crate::graphql::schema::{Context, Schema};
 use actix_web::{error, web, Error, HttpResponse};
 use juniper::http::{playground::playground_source, GraphQLRequest};
 use std::sync::Arc;
-use crate::data::cult::CultData;
-use crate::data::person::PersonData;
 
-pub(super) async fn graphql(
+pub async fn graphql(
   st: web::Data<Arc<Schema>>,
   data: web::Json<GraphQLRequest>,
 ) -> Result<HttpResponse, Error> {
@@ -24,7 +23,7 @@ pub(super) async fn graphql(
   )
 }
 
-pub(super) fn playground() -> HttpResponse {
+pub fn playground() -> HttpResponse {
   let html = playground_source("http://localhost:8000/graphql");
   HttpResponse::Ok()
     .content_type("text/html; charset=utf-8")

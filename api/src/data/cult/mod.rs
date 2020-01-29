@@ -1,4 +1,4 @@
-use crate::graphql::resolvers::Cult;
+use crate::type_defs::Cult;
 
 pub mod get_cult_by_id;
 use get_cult_by_id::{get_loader, CultLoader};

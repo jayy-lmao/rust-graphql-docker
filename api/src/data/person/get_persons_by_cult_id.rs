@@ -1,6 +1,6 @@
 extern crate postgres;
 use crate::db::get_db_conn;
-use crate::graphql::resolvers::Person;
+use crate::type_defs::Person;
 use dataloader::Loader;
 use dataloader::{BatchFn, BatchFuture};
 use futures::{future, FutureExt as _};
