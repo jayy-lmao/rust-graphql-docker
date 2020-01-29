@@ -20,7 +20,7 @@ COPY ./Cargo.toml ./Cargo.toml
 
 # Caching deps
 RUN cargo build --target x86_64-unknown-linux-musl --release
-RUN rm target/x86_64-unknown-linux-musl/release/deps/readspacer*
+RUN rm target/x86_64-unknown-linux-musl/release/deps/rust*
 
 # Replacing with actual src
 RUN rm src/*.rs

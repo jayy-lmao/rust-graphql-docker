@@ -1,14 +1,20 @@
-Original Rest API & DB connection is inspired by:
-https://turreta.com/2019/09/21/rest-api-with-rust-actix-web-and-postgresql-part-3/
+# Dockerize Graphql Rust
 
-Graphql setup is inspired by:
-https://www.freecodecamp.org/news/building-powerful-graphql-servers-with-rust/
+This project is currently for demonstrating the use of dataloaders in a rust-based graphql server.
+This demo uses:
 
-The dockerfile is all me baby :)
+- `actix-web` a high-performance webserver for rust https://www.techempower.com/benchmarks/
+- `juniper` a popular rust graphql framework https://github.com/graphql-rust/juniper
+- A dockerfile which creates a _from scratch_ minimal sized container
+- Cults (more to be added)
+
+
+There are definitely some improvements to be made in db requests, pagination etc. Let me know if you spot anything you think is top-priority!
 
 ## Running locally
 
 simple as `docker-compose up`, crazy!
+Then navigate to http://localhost:8000/graphql
 
 ## TODO
 
@@ -22,3 +28,15 @@ simple as `docker-compose up`, crazy!
 - [ ] Dataloaders
 - [x] Auth?
 - [ ] DB pool
+
+
+## References
+
+Original Rest API & DB connection is inspired by:
+https://turreta.com/2019/09/21/rest-api-with-rust-actix-web-and-postgresql-part-3/
+
+Graphql setup is inspired by:
+https://www.freecodecamp.org/news/building-powerful-graphql-servers-with-rust/
+
+Rust containerization initially inspired by:
+https://alexbrand.dev/post/how-to-package-rust-applications-into-minimal-docker-containers/
