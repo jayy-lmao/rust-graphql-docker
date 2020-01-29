@@ -1,6 +1,5 @@
-use crate::loaders::person_loader::PersonBatcher;
-use crate::models::cult;
-use dataloader::Loader;
+use crate::data::person::PersonData;
+use crate::data::cult::CultData;
 use juniper;
 use juniper::FieldResult;
 
@@ -38,27 +37,25 @@ impl Cult {
     self.name.as_str()
   }
 
-  pub async fn members(context: &Context) -> FieldResult<Vec<Person>> {
-    Ok(
-      context
-        .person_loader
-        .load_many(vec![1, 2, 3])
-        .await
-        .unwrap(),
-    )
+  pub async fn members(&self, ctx: &Context) -> FieldResult<Vec<Person>> {
+    Ok(ctx.person_data.persons_by_cult_id(self.id).await)
   }
 }
 
 #[derive(Clone)]
 pub struct Context {
-  person_loader: Loader<i32, Person, (), PersonBatcher>,
+  person_data: PersonData,
+  cult_data: CultData,
 }
 
 impl juniper::Context for Context {}
 
 impl Context {
-  pub fn new(person_loader: Loader<i32, Person, (), PersonBatcher>) -> Self {
-    Self { person_loader }
+  pub fn new(person_data: PersonData, cult_data: CultData) -> Self {
+    Self {
+      person_data,
+      cult_data,
+    }
   }
 }
 
@@ -67,12 +64,10 @@ pub struct Query;
 #[juniper::graphql_object(Context = Context)]
 impl Query {
   async fn person_by_id(context: &Context, id: i32) -> FieldResult<Person> {
-    Ok(context.person_loader.load(id).await.unwrap())
+    Ok(context.person_data.person_by_id(id).await)
   }
-  async fn cults() -> Vec<Cult> {
-    let mut vec = Vec::new();
-    cult::get_cult_all(&mut vec);
-    vec
+  async fn cult_by_id(context: &Context, id: i32) -> FieldResult<Cult> {
+    Ok(context.cult_data.cult_by_id(id).await)
   }
 }
 
@@ -81,7 +76,7 @@ pub struct Mutation;
 #[juniper::graphql_object(Context = Context)]
 impl Mutation {
   // not really needed, but graphiql bug if this is empty…
-  pub fn nothing(name: String) -> i32 {
+  pub fn nothing(_name: String) -> i32 {
     0
   }
 }
