@@ -15,5 +15,5 @@ INSERT INTO persons (name, cult)
         VALUES ('Bob', 2);
 INSERT INTO persons (name, cult) 
         VALUES ('Hamo', 2);
-INSERT INTO persons (name) 
-        VALUES ('Jerry');
+INSERT INTO persons (name, cult) 
+        VALUES ('Jerry', 1);
