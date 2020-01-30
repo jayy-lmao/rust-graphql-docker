@@ -29,6 +29,42 @@ Then navigate to http://localhost:8000/graphql
 - [ ] Auth?
 - [ ] DB pool
 
+## Schema
+
+```graphql
+type Cult {
+  id: Int!
+  name: String!
+  members: [Person!]!
+}
+
+type Mutation {
+  createPerson(data: NewPerson!): Person!
+  createCult(data: NewCult!): Cult!
+}
+
+input NewCult {
+  name: String!
+}
+
+input NewPerson {
+  name: String!
+  cult: Int
+}
+
+type Person {
+  id: Int!
+  name: String!
+  cult: Cult
+}
+
+type Query {
+  personById(id: Int!): Person!
+  persons: [Person!]!
+  cultById(id: Int!): Cult!
+  cults: [Cult!]!
+}
+```
 
 ## References
 
