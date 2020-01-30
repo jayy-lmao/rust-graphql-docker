@@ -25,8 +25,8 @@ Then navigate to http://localhost:8000/graphql
   - [ ] Update
   - [ ] Delete
 - [ ] Context to later use in Dataloaders and Auth
-- [ ] Dataloaders
-- [x] Auth?
+- [x] Dataloaders
+- [ ] Auth?
 - [ ] DB pool
 
 
