@@ -1,6 +1,5 @@
-
 extern crate postgres;
-use postgres::{ Connection, TlsMode };
+use postgres::{Connection, TlsMode};
 use std::env;
 
 pub fn get_db_conn() -> Connection {

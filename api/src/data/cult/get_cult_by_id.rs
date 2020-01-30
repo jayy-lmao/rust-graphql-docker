@@ -9,10 +9,7 @@ use std::collections::HashMap;
 pub fn get_cult_by_ids(hashmap: &mut HashMap<i32, Cult>, ids: Vec<i32>) {
     let conn = get_db_conn();
     for row in &conn
-        .query(
-            "SELECT id, name FROM cults WHERE id = ANY($1)",
-            &[&ids],
-        )
+        .query("SELECT id, name FROM cults WHERE id = ANY($1)", &[&ids])
         .unwrap()
     {
         let cult = Cult {
@@ -39,24 +36,23 @@ pub fn get_cult_by_ids(hashmap: &mut HashMap<i32, Cult>, ids: Vec<i32>) {
 //     }
 // }
 
-
 pub struct CultBatcher;
 
 impl BatchFn<i32, Cult> for CultBatcher {
-  type Error = ();
+    type Error = ();
 
-  fn load(&self, keys: &[i32]) -> BatchFuture<Cult, Self::Error> {
-    println!("load batch {:?}", keys);
-    let mut cult_hashmap = HashMap::new();
-    get_cult_by_ids(&mut cult_hashmap, keys.to_vec());
-    future::ready(keys.iter().map(|key| cult_hashmap[key].clone()).collect())
-      .unit_error()
-      .boxed()
-  }
+    fn load(&self, keys: &[i32]) -> BatchFuture<Cult, Self::Error> {
+        println!("load batch {:?}", keys);
+        let mut cult_hashmap = HashMap::new();
+        get_cult_by_ids(&mut cult_hashmap, keys.to_vec());
+        future::ready(keys.iter().map(|key| cult_hashmap[key].clone()).collect())
+            .unit_error()
+            .boxed()
+    }
 }
 
 pub type CultLoader = Loader<i32, Cult, (), CultBatcher>;
 
 pub fn get_loader() -> CultLoader {
-  Loader::new(CultBatcher)
+    Loader::new(CultBatcher)
 }

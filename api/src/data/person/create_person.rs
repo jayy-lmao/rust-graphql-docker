@@ -1,6 +1,5 @@
-
-use crate::type_defs::{Person,NewPerson};
 use crate::db::get_db_conn;
+use crate::type_defs::{NewPerson, Person};
 
 pub fn create_person(data: NewPerson) -> Person {
     let conn = get_db_conn();
@@ -14,6 +13,6 @@ pub fn create_person(data: NewPerson) -> Person {
     Person {
         id: row.get(0),
         name: row.get(1),
-        cult: row.get(2)
+        cult: row.get(2),
     }
 }

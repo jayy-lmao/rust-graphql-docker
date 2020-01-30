@@ -1,5 +1,5 @@
-mod person;
 mod cult;
+mod person;
 
-pub use person::PersonData;
 pub use cult::CultData;
+pub use person::PersonData;

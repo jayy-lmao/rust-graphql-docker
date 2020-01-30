@@ -1,6 +1,5 @@
-
-use crate::type_defs::{Cult,NewCult};
 use crate::db::get_db_conn;
+use crate::type_defs::{Cult, NewCult};
 
 pub fn create_cult(data: NewCult) -> Cult {
     let conn = get_db_conn();
