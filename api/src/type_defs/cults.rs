@@ -10,6 +10,12 @@ pub struct Cult {
   pub name: String,
 }
 
+#[derive(juniper::GraphQLInputObject, Debug, Clone)]
+#[graphql(name="NewPerson", description="A creating a person!")]
+pub struct NewCult {
+  pub name: String,
+}
+
 #[juniper::graphql_object(Context = Context)]
 impl Cult {
   pub fn id(&self) -> i32 {

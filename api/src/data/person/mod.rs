@@ -1,7 +1,8 @@
-use crate::type_defs::Person;
+use crate::type_defs::{Person, NewPerson};
 
 pub mod get_person_by_id;
 pub mod get_persons_by_cult_id;
+pub mod create_person;
 
 #[derive(Clone)]
 pub struct PersonData {
@@ -21,5 +22,8 @@ impl PersonData {
   }
   pub async fn persons_by_cult_id(&self, id: i32) -> Vec<Person> {
     self.persons_by_cult_id.load(id).await.unwrap()
+  }
+  pub async fn create_person(&self, data: NewPerson) -> Person {
+    create_person::create_person(data)
   }
 }

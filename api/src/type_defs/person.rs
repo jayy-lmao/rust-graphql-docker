@@ -13,6 +13,13 @@ pub struct Person {
   pub cult: Option<i32>,
 }
 
+#[derive(juniper::GraphQLInputObject, Debug, Clone)]
+#[graphql(name="NewPerson", description="A creating a person!")]
+pub struct NewPerson {
+  pub name: String,
+  pub cult: Option<i32>,
+}
+
 #[juniper::graphql_object(Context = Context)]
 impl Person {
   pub fn id(&self) -> i32 {
