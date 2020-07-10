@@ -76,3 +76,7 @@ https://www.freecodecamp.org/news/building-powerful-graphql-servers-with-rust/
 
 Rust containerization initially inspired by:
 https://alexbrand.dev/post/how-to-package-rust-applications-into-minimal-docker-containers/
+
+## Other stuff
+
+If you are ever looking at setting up a Redis pubsub for keeping multiple servers in sync; consider checking out my other _very early stages_ demo repo https://github.com/jayy-lmao/rust-chat-bb8-ws
