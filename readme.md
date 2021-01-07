@@ -1,5 +1,7 @@
 # Dockerize Graphql Rust
 
+***More current version at https://github.com/jayy-lmao/rust-cult-graphql-server***
+
 This project is currently for demonstrating the use of dataloaders in a rust-based graphql server.
 This demo uses:
 
@@ -79,4 +81,6 @@ https://alexbrand.dev/post/how-to-package-rust-applications-into-minimal-docker-
 
 ## Other stuff
 
-If you are ever looking at setting up a Redis pubsub for keeping multiple servers in sync; consider checking out my other _very early stages_ demo repo https://github.com/jayy-lmao/rust-chat-bb8-ws
+If you are ever looking at setting up a Redis pubsub for keeping multiple servers in sync; check out https://github.com/jayy-lmao/rust-chat-bb8-ws
+
+If you want a more up-to-date version using *actix-web* and *async-graphql* see https://github.com/jayy-lmao/rust-cult-graphql-server
