@@ -2,10 +2,6 @@ FROM ekidd/rust-musl-builder AS build
 WORKDIR /usr/src/
 USER root
 
-# install rustup/cargo
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
-ENV PATH /root/.cargo/bin:$PATH
-
 # Add compilation target for later scratch container
 ENV RUST_TARGETS="x86_64-unknown-linux-musl"
 RUN rustup target install x86_64-unknown-linux-musl
@@ -20,7 +16,7 @@ COPY ./Cargo.toml ./Cargo.toml
 
 # Caching deps
 RUN cargo build --target x86_64-unknown-linux-musl --release
-RUN rm target/x86_64-unknown-linux-musl/release/deps/rust*
+RUN rm -rf target/x86_64-unknown-linux-musl/release/deps/rust*
 
 # Replacing with actual src
 RUN rm src/*.rs
