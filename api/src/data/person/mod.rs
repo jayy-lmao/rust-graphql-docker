@@ -19,10 +19,10 @@ impl PersonData {
         }
     }
     pub async fn person_by_id(&self, id: i32) -> Person {
-        self.person_by_id.load(id).await.unwrap()
+        self.person_by_id.load(id).await
     }
     pub async fn persons_by_cult_id(&self, id: i32) -> Vec<Person> {
-        self.persons_by_cult_id.load(id).await.unwrap()
+        self.persons_by_cult_id.load(id).await
     }
     pub async fn create_person(&self, data: NewPerson) -> Person {
         create_person::create_person(data)

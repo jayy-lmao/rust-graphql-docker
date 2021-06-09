@@ -1,9 +1,9 @@
 extern crate postgres;
 use crate::db::get_db_conn;
 use crate::type_defs::Cult;
-use dataloader::Loader;
-use dataloader::{BatchFn, BatchFuture};
-use futures::{future, FutureExt as _};
+use dataloader::cached::Loader;
+use dataloader::BatchFn;
+use async_trait::async_trait;
 use std::collections::HashMap;
 
 pub fn get_cult_by_ids(hashmap: &mut HashMap<i32, Cult>, ids: Vec<i32>) {
@@ -38,21 +38,20 @@ pub fn get_cult_by_ids(hashmap: &mut HashMap<i32, Cult>, ids: Vec<i32>) {
 
 pub struct CultBatcher;
 
+#[async_trait]
 impl BatchFn<i32, Cult> for CultBatcher {
-    type Error = ();
 
-    fn load(&self, keys: &[i32]) -> BatchFuture<Cult, Self::Error> {
-        println!("load batch {:?}", keys);
+    async fn load(&self, keys: &[i32]) -> HashMap<i32, Cult> {
+        println!("load cult batch {:?}", keys);
         let mut cult_hashmap = HashMap::new();
         get_cult_by_ids(&mut cult_hashmap, keys.to_vec());
-        future::ready(keys.iter().map(|key| cult_hashmap[key].clone()).collect())
-            .unit_error()
-            .boxed()
+        cult_hashmap
     }
 }
 
-pub type CultLoader = Loader<i32, Cult, (), CultBatcher>;
+pub type CultLoader = Loader<i32, Cult, CultBatcher>;
 
 pub fn get_loader() -> CultLoader {
     Loader::new(CultBatcher)
+        .with_yield_count(100)
 }

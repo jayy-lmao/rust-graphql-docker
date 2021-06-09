@@ -17,7 +17,7 @@ impl CultData {
         }
     }
     pub async fn cult_by_id(&self, id: i32) -> Cult {
-        self.cult_by_id.load(id).await.unwrap()
+        self.cult_by_id.load(id).await
     }
     pub async fn create_cult(&self, data: NewCult) -> Cult {
         create_cult::create_cult(data)

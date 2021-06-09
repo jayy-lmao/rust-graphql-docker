@@ -13,12 +13,12 @@ actix-web = {version = "2.0", features = []}
 anyhow = "1.0"
 argon2rs = "0.2"
 chrono = { version = "0.4", features = ["serde"] }
-dataloader = "0.6.0"
+dataloader = "0.12.0"
 dotenv = "0.9.0"
 env_logger = "0.6"
 futures = "0.3"
 # juniper = "0.14"
-juniper = { git = "https://github.com/graphql-rust/juniper", branch = "async-await", features = ["async"] }
+juniper = { git = "https://github.com/graphql-rust/juniper" }
 
 lazy_static = "1"
 num = "0.2"
@@ -30,6 +30,7 @@ serde = "1.0"
 serde_derive = "1.0"
 serde_json = "1.0"
 thiserror = "1.0"
+async-trait = "0.1.30"
 
 [[bin]]
 name = "rust-graphql"
