@@ -1,5 +1,6 @@
 use super::{mutation::Mutation, query::Query};
 use crate::data::{CultData, PersonData};
+use juniper::EmptySubscription;
 
 use juniper;
 
@@ -20,8 +21,8 @@ impl Context {
     }
 }
 
-pub type Schema = juniper::RootNode<'static, Query, Mutation>;
+pub type Schema = juniper::RootNode<'static, Query, Mutation, EmptySubscription<Context>>;
 
 pub fn create_schema() -> Schema {
-    Schema::new(Query {}, Mutation {})
+    Schema::new(Query {}, Mutation {}, EmptySubscription::<Context>::new())
 }
